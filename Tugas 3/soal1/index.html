@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <section class="container-fluid">
+        <section class="row mt-3 pt-3 justify-content-center">
+            <section class="col-sm-6 col-md-4">
+                <div class="card">
+                    <div class="card-header">Perhitungan Nilai Mahasiswa</div>
+                    <div class="card-body">
+                        <form name="form" class="form-container">
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" class="form-control" id="NIM" placeholder=" " name="" maxlength="12" onkeypress="return validasiAngka(event)">
+                                <label for="ferrari">Masukan Nim :</label>
+                            </div>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" class="form-control" id="nama" placeholder=" " name="" onkeypress="return validasiHuruf(event)">
+                                <label for="ferrari">Masukan Nama :</label>
+                            </div>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" class="form-control" id="tugas" placeholder=" " name="" maxlength="3" onkeypress="return validasiAngka(event)">
+                                <label for="ferrari">Masukan Nilai Tugas :</label>
+                            </div>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" class="form-control" id="partisipasi" placeholder=" " name="" maxlength="3" onkeypress="return validasiAngka(event)">
+                                <label for="ferrari">Masukan Nilai Partisipasi :</label>
+                            </div>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" class="form-control" id="uts" placeholder=" " name="" maxlength="3" onkeypress="return validasiAngka(event)">
+                                <label for="ferrari">Masukan Nilai Uts :</label>
+                            </div>
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" class="form-control" id="uas" placeholder=" " name="" maxlength="3" onkeypress="return validasiAngka(event)">
+                                <label for="ferrari">Masukan Nilai Uas :</label>
+                            </div>
+                            <div class="toast hide" id="demo">
+                                <div class="toast-header">
+                                    <strong class="me-auto">Nilai Akhir:</strong>
+                                    <button type="button" class="btn-close close" data-bs-dismiss="toast"></button>
+                                </div>
+                                <div class="toast-body">
+                                    <p id="angka"></p>
+                                    <p id="huruf"></p>
+                                </div>
+                            </div>
+                            <div class="mb-3 mt-3">
+                                <button type="button" class="btn btn-primary" id="kirim">Hitung</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </section>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script>
+        $('body').on('click','.close',function(){
+          $(this).closest('.toast').toast('hide')
+        })
+        function validasiAngka(evt) {
+            let masukan = (evt.which) ? evt.which : event.masukan
+            if (masukan > 31 && (masukan < 48 || masukan > 57)){
+                return false;
+            }
+            return true;
+        }
+
+        function validasiHuruf(evt){
+        var charCode = (evt.which) ? evt.which : event.keyCode
+        if ((charCode < 65 || charCode > 90)&&(charCode < 97 || charCode > 122)&&charCode>32){
+            return false;
+        }
+        return true;
+    }
+
+    document.getElementById('kirim').addEventListener("click", kalkulasi)
+
+        function kalkulasi() {
+            let nim = document.getElementById('NIM').value;
+            let nama = document.getElementById('nama').value;
+            let tugas = document.getElementById('tugas').value;
+            let partisipasi = document.getElementById('partisipasi').value;
+            let uts = document.getElementById('uts').value;
+            let uas = document.getElementById('uas').value;
+            let huruf = "";
+
+            if (nim === "" || nama === "" || tugas == 0 || partisipasi == 0 || uts == 0 || uas == 0) {
+                alert("Mohon Isi Semua Form dan Tidak Ada Yang Kosong!")
+            } else {
+                if (tugas > 100 || partisipasi > 100 || uts > 100 || uas > 100) {
+                    alert("Mohon Maaf Nilai Angka Tidak Lebih Dari 100");
+                } else {
+                    let nilaiAngka = (Number(tugas)+Number(partisipasi)+Number(uts)+Number(uas))/4;
+                    if (nilaiAngka <= 50) {
+                        huruf = "C";
+                        kirim(huruf, nilaiAngka);
+                    } else if (nilaiAngka > 50 && nilaiAngka <= 60) {
+                        huruf = "C+";
+                        kirim(huruf, nilaiAngka);
+                    } else if (nilaiAngka > 60 && nilaiAngka <= 70) {
+                        huruf = "B";
+                        kirim(huruf, nilaiAngka);
+                    } else if (nilaiAngka > 70 && nilaiAngka <= 80) {
+                        huruf = "B+";
+                        kirim(huruf, nilaiAngka);
+                    } else if (nilaiAngka > 80 && nilaiAngka <= 90) {
+                        huruf = "A";
+                        kirim(huruf, nilaiAngka);
+                    } else if (nilaiAngka > 90 && nilaiAngka <= 100) {
+                        huruf = "A+";
+                        kirim(huruf, nilaiAngka);
+                    }
+                    function kirim(huruf, nilaiAngka) {
+                        document.getElementById("demo").classList.remove("hide");
+                        document.getElementById("demo").classList.add("show");
+                        document.getElementById("angka").innerHTML = '<b>Nilai Rata-rata :</b> ' + nilaiAngka;
+                        document.getElementById("huruf").innerHTML = '<b>Nilai huruf :</b> ' + huruf;
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
